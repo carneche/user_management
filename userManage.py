@@ -9,6 +9,20 @@ class Utilisateur:
     #     self.age = 15
     #     self.ville = ""
 
+    def chargerDonnees(self):
+        try:
+            con = db.connexion()
+            cursor = con.cursor()
+            requete = "SELECT mat, nom, prenom, age, ville FROM Users"
+            cursor.execute(requete)
+            resultat = cursor.fetchall()
+        except BaseException as e :
+            print("Erreur", e)
+        else:
+            header = ["Matricule", "Nom", "Prénom", "Age", "Ville"]
+            mylist = [element for element in resultat]
+        return header, mylist
+
     def rechercherUserId(self, id):
         try:
             con = db.connexion()

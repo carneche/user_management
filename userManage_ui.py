@@ -15,7 +15,7 @@ class UsersManage(QtWidgets.QWidget, Ui_fenetrePrincipale, ul):
         self.radio_matricule.setChecked(True)
         self.setupConnections()
         self.tableView.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectRows) # Sélection de la ligne
-        self.tableView.clicked.connect(self.fn_get_cell_Value)
+        self.tableView.clicked.connect(self.selectionDonneesLigne)
         self.show()
     
     def setupConnections(self):
@@ -25,7 +25,7 @@ class UsersManage(QtWidgets.QWidget, Ui_fenetrePrincipale, ul):
         self.btn_nettoyer.clicked.connect(self.nettoyerChamps)
         self.btn_rechercher.clicked.connect(self.rechercherUtilisateur)
     
-    def fn_get_cell_Value(self, index):
+    def selectionDonneesLigne(self, index):
         mat =  index.data() # Sélection d'un élément du tableau
         resultat = ul.rechercherUserId(self, mat)
         self.le_matricule.setText(resultat[1])
@@ -35,22 +35,7 @@ class UsersManage(QtWidgets.QWidget, Ui_fenetrePrincipale, ul):
         self.le_ville.setText(resultat[5])
         # a = self.tableView.selectionModel().
         # print(a)
-
-############### A mettre dans userManage.py #####################
-    def chargerDonnees(self):
-        try:
-            con = db.connexion()
-            cursor = con.cursor()
-            requete = "SELECT mat, nom, prenom, age, ville FROM Users"
-            cursor.execute(requete)
-            resultat = cursor.fetchall()
-        except BaseException as e :
-            print("Erreur", e)
-        else:
-            header = ["Matricule", "Nom", "Prénom", "Age", "Ville"]
-            mylist = [element for element in resultat]
-        return header, mylist
-
+   
     def ajouterUtilisateur(self):
         try:
             mat = self.le_matricule.text()
